@@ -6,7 +6,7 @@
 /*   By: ahmed <ahmed@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:20:01 by aahlaqqa          #+#    #+#             */
-/*   Updated: 2024/10/06 18:01:38 by ahmed            ###   ########.fr       */
+/*   Updated: 2024/10/07 00:12:21 by ahmed            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,6 @@ void expand_env_var(char *input, t_helpe *helpe, t_token **token_list, t_exec *e
         res = expand(temp, exec);
         if (res == NULL)
             exec->expand = 1;
-        printf("res--->%s\n", res);
         handle_expansion_result(input, helpe, res, token_list);
     }
 }
@@ -307,8 +306,8 @@ void tokenize_input(char *input, t_token **token_list, t_exec *exec)
             copy_token(helpe->token, &helpe->token_len, token_list, *helpe->expected);
         else if ((is_operator(input[helpe->i]) || is_multi_operator(&input[helpe->i])) && exec->delimiter == 0)
             handle_operators_logic(input, helpe, token_list, exec);
-        else if (input[helpe->i] == '$' && (exec->delimiter == 0 || exec->delimiter != '\''))
-            handle_dollar_sign_logic(input, helpe, token_list, exec);
+        // else if (input[helpe->i] == '$' && (exec->delimiter == 0 || exec->delimiter != '\''))
+        //     handle_dollar_sign_logic(input, helpe, token_list, exec);
         else
             helpe->token[helpe->token_len++] = input[helpe->i];
         helpe->i++;

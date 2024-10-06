@@ -6,7 +6,7 @@
 /*   By: ahmed <ahmed@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:20:15 by aahlaqqa          #+#    #+#             */
-/*   Updated: 2024/10/06 16:32:09 by ahmed            ###   ########.fr       */
+/*   Updated: 2024/10/07 00:10:38 by ahmed            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,12 @@ void process_redirection_or_pipe(t_cmd **cmd_list, t_cmd **current_cmd, t_token 
     {
         if (*current_cmd)
         {
-            printf("hhhhh\n");
-            printf("redirection value =  %s\n", (*current_token)->value);
+
             handle_redirections(*current_cmd, current_token, exec);
         }
         else
         {
-            printf("hehehe\n");
+
             *current_cmd = create_empty_command();
             if (!*cmd_list)
                 *cmd_list = *current_cmd;
@@ -91,12 +90,13 @@ void process_token(t_cmd **cmd_list, t_cmd **current_cmd, t_token **current_toke
 
     token_val = (*current_token)->value;
     len = ft_strlen(token_val);
-    // if (token_val[0] == '\'' && token_val[len - 1] == '\'')
-    // {
-    //     printf("here\n");
-    //     if ((*current_token)->value == NULL)
-    //         return;
-    // }
+    if (token_val[0] == '\'' && token_val[len - 1] == '\'')
+    {
+        
+        (*current_token)->value = remove_quotes((*current_token)->value, exec);
+        if ((*current_token)->value == NULL)
+            return;
+    }
     if ((*current_token)->type == COMMAND || (*current_token)->type == ARGUMENT)
     {
         if ((*current_token)->value == NULL)
@@ -108,7 +108,7 @@ void process_token(t_cmd **cmd_list, t_cmd **current_cmd, t_token **current_toke
              (*current_token)->type == RED_OUT || (*current_token)->type == APPEND ||
              (*current_token)->type == HERDOC)
     {
-        printf("here\n");
+        
         process_redirection_or_pipe(cmd_list, current_cmd, current_token, expected, exec);
     }
 }

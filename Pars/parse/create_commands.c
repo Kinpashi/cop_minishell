@@ -6,7 +6,7 @@
 /*   By: ahmed <ahmed@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 01:20:10 by aahlaqqa          #+#    #+#             */
-/*   Updated: 2024/10/06 18:57:18 by ahmed            ###   ########.fr       */
+/*   Updated: 2024/10/07 00:11:46 by ahmed            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void add_redirection(t_output_input **redirection, char *filename, int heredoc, 
     processed_filename = remove_quotes(filename, exec);
     if (filename == NULL)
     {
-        printf("inside filename\n");
         new->ambigious = 1;
     }
     else
@@ -119,7 +118,6 @@ void handle_redirections(t_cmd *current_cmd, t_token **current_token, t_exec *ex
 
     token = *current_token;
     next_token = token->next;
-    printf("value---->  %s\n", token->value);
     if (next_token && (next_token->type == COMMAND || next_token->type == ARGUMENT))
     {
         if (token->type == RED_IN)
@@ -130,23 +128,6 @@ void handle_redirections(t_cmd *current_cmd, t_token **current_token, t_exec *ex
             add_redirection(&current_cmd->redirection, next_token->value, 0, NULL, 0, 1, exec);
         else if (token->type == APPEND)
             add_redirection(&current_cmd->redirection, next_token->value, 0, NULL, 1, 1, exec);
-        *current_token = next_token;
-    }
-    else if (next_token == NULL || next_token->value == NULL)
-    {
-        printf("im here\n");
-        if (token->type == RED_IN)
-            add_redirection(&current_cmd->redirection, NULL, 0, NULL, 0, 0, exec);
-        else if (token->type == HERDOC)
-            add_redirection(&current_cmd->redirection, NULL, 1, NULL, 0, 0, exec);
-        else if (token->type == RED_OUT)
-        {
-            printf("i enter\n");
-            exit(1);
-            add_redirection(&current_cmd->redirection, NULL, 0, NULL, 0, 1, exec);
-        }
-        else if (token->type == APPEND)
-            add_redirection(&current_cmd->redirection, NULL, 0, NULL, 1, 1, exec);
         *current_token = next_token;
     }
     else
@@ -169,7 +150,6 @@ t_cmd *parse_tokens(t_token *token_list, t_exec *exec)
     expected = COMMAND;
     while (current_token)
     {
-        printf("----------VALUE  %s\n", current_token->value);
         if (current_token->type == PIPE && expected == COMMAND)
         {
             ft_error(current_token->value);
